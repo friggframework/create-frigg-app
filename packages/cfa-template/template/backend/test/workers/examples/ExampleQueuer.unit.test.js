@@ -9,44 +9,47 @@ jest.mock('aws-sdk', () => {
             messagesReceived.push(params.MessageBody);
             Promise.resolve();
         }),
-        promise: jest.fn()
+        promise: jest.fn(),
     };
 
     const configMocked = {
-        update: (params) => console.log(params)
+        update: (params) => {
+            return params;
+        },
     };
 
     return {
         config: configMocked,
-        SQS: jest.fn(() => SQSMocked)
+        SQS: jest.fn(() => SQSMocked),
     };
 });
 
-
 describe('ExampleQueuer unit tests', () => {
-    let exampleQueuer;
+    let exampleQueuer = new ExampleQueuer();
 
     it('Items are successfully enqueued', async () => {
-        const mockedIntegration = { id: 775656, config: { useMasterBoards: true } };
+        const mockedIntegration = {
+            id: 775656,
+            config: { useMasterBoards: true },
+        };
         let sentBodies = [];
+        Integration.prototype;
 
-        jest
-            .spyOn(Integration.prototype, 'list')
-            .mockImplementation((params) => {
-                return [mockedIntegration];
-            });
+        Integration.prototype.find = jest.fn().mockImplementation(() => {
+            return [mockedIntegration];
+        });
 
-        jest
-            .spyOn(QueuerUtil.prototype, 'enqueue')
-            .mockImplementation((params) => {
-                sentBodies.push(params);
-                return 'res';
-            });
+        QueuerUtil.enqueue = jest.fn().mockImplementation((params) => {
+            sentBodies.push(params);
+            return 'res';
+        });
 
         await exampleQueuer._run();
 
         expect(sentBodies.length).toEqual(1);
         expect(sentBodies[0].worker).toEqual('CrossbeamPollWorker');
-        expect(sentBodies[0].worker.message.integrationId).toEqual(mockedIntegration.id);
+        expect(sentBodies[0].message.integrationId).toEqual(
+            mockedIntegration.id
+        );
     });
 });

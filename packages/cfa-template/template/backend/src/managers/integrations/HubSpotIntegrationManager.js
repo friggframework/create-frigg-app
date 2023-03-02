@@ -1,5 +1,5 @@
 const { IntegrationManager } = require('@friggframework/integrations');
-const {get} = require("@friggframework/assertions");
+const { get } = require('@friggframework/assertions');
 
 class HubSpotIntegrationManager extends IntegrationManager {
     static Config = {
@@ -29,9 +29,8 @@ class HubSpotIntegrationManager extends IntegrationManager {
      * ALL CUSTOM/OPTIONAL METHODS FOR AN INTEGRATION MANAGER
      */
     async getSampleData() {
-        const res = await this.targetInstance.api.searchDeals()
-        console.log(res.results.length)
-        const formatted = res.results.map(deal => {
+        const res = await this.targetInstance.api.searchDeals();
+        const formatted = res.results.map((deal) => {
             const formattedDeal = {
                 id: deal.id,
                 name: deal.properties.dealname,
@@ -39,13 +38,11 @@ class HubSpotIntegrationManager extends IntegrationManager {
                 daysToClose: deal.properties.days_to_close,
                 createdAt: deal.createdAt,
                 closeDate: deal.properties.closedate,
-            }
+            };
 
-
-            return formattedDeal
-        })
-        return {data: formatted}
-
+            return formattedDeal;
+        });
+        return { data: formatted };
     }
 
     /**
@@ -71,7 +68,7 @@ class HubSpotIntegrationManager extends IntegrationManager {
     async processDelete(params) {}
 
     async getConfigOptions() {
-        const options = {}
+        const options = {};
         return options;
     }
 }

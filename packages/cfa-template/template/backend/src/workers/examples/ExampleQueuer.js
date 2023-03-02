@@ -1,5 +1,5 @@
 const moment = require('moment');
-const { Worker }  = require('@friggframework/core');
+const { Worker } = require('@friggframework/core');
 const { Integration } = require('@friggframework/integrations');
 const QueuerUtil = require('../../utils/QueuerUtil');
 const { debug } = require('@friggframework/logs');
@@ -10,7 +10,7 @@ class ExampleQueuer extends Worker {
         this.integrationMO = new Integration();
     }
 
-    async _run(params) {
+    async _run() {
         // Get monday integrations that are ENABLED
         // For each one, queue up the CrossbeamPollWorker
         // For now... default 1 hour. Need to pull this from some config variable
@@ -18,7 +18,7 @@ class ExampleQueuer extends Worker {
         const oneHourAgo = moment(Date.now()).subtract(1, 'h');
         debug("Ahh, Monday.com Queuer Hungry! What's there to eat?");
 
-        const integrations = await this.integrationMO.list({
+        const integrations = await this.integrationMO.find({
             'config.type': 'monday',
             status: 'ENABLED',
         });
@@ -78,8 +78,6 @@ class ExampleQueuer extends Worker {
         debug('Okay, all done!');
         return true;
     }
-
-    async _validateParams(params) {}
 }
 
 module.exports = ExampleQueuer;

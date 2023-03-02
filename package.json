@@ -5,7 +5,10 @@
   ],
   "private": true,
   "scripts": {
-    "start": "concurrently \"cd packages/cfa-template && npm start \" "
+    "start": "concurrently \"cd packages/cfa-template && npm start \" ",
+    "test": "concurrently \"cd packages/cfa-template && npm test \" ",
+    "install": "concurrently \"cd packages/cfa-template/template/backend && npm i \" \"cd packages/cfa-template/template/frontend && npm i \" ",
+    "i": "npm run install"
   },
   "devDependencies": {
     "concurrently": "^7.2.1",

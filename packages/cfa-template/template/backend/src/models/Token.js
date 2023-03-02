@@ -42,7 +42,13 @@ schema.static({
     },
     getJSONTokenFromBase64BufferToken: function (buffer) {
         let tokenStr = Buffer.from(buffer.trim(), 'base64').toString('ascii');
-        return JSON.parse(tokenStr);
+        try {
+            console.log('JON >>> tokenStr', tokenStr);
+            return JSON.parse(tokenStr);
+        } catch (error) {
+            console.error(error);
+            return undefined;
+        }
     },
 
     // Takes in a JSON Token with id and token in it and verifies the token
@@ -63,8 +69,8 @@ schema.static({
         } else {
             throw new Error('Invalid Token: Token does not exist');
         }
-    }
-})
+    },
+});
 
 const Token = mongoose.models.Token || mongoose.model('Token', schema);
 

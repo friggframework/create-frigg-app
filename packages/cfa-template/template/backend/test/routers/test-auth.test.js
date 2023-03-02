@@ -5,8 +5,8 @@ const auth = require('../../src/routers/auth');
 const EntityManager = require('../../src/managers/entities/EntityManagerFactory');
 const IntegrationManager = require('../../src/managers/integrations/IntegrationManagerFactory');
 
-jest.mock('../../src/managers/entities/EntityManager');
-jest.mock('../../src/managers/integrations/IntegrationManager');
+jest.mock('../../src/managers/entities/EntityManagerFactory');
+jest.mock('../../src/managers/integrations/IntegrationManagerFactory');
 
 chai.use(chaiHttp);
 
@@ -114,4 +114,5 @@ const mockIntegrationManager = (errors) => ({
             errors,
         },
     },
+    getConfigOptions: async () => {},
 });

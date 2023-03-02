@@ -31,6 +31,8 @@
   },
   "scripts": {
     "start": "concurrently \"cd template/backend && npm run backend-start\" \"cd template/frontend && npm run frontend-start\"",
-    "test": "npm test -workspaces"
+    "test-backend": "echo backend; pwd; cd template/backend && npm test",
+    "test-frontend": "echo frontend; pwd; cd template/frontend && npm test",
+    "test": "npm run test-backend && npm run test-frontend"
   }
 }

@@ -1,7 +1,11 @@
 frameworkVersion: '>=3.17.0'
 service: create-frigg-app
+
+useDotenv: true
+
 package:
     individually: true
+
 provider:
     name: aws
     runtime: nodejs16.x
@@ -14,18 +18,20 @@ provider:
     iamRoleStatements:
         - Effect: Allow
           Action:
-            - sqs:*
+              - sqs:*
           Resource:
-            - { 'Fn::GetAtt': ['ExamplePollWorkerQueue', 'Arn'] }
+              - { 'Fn::GetAtt': ['ExamplePollWorkerQueue', 'Arn'] }
         - Effect: Allow
           Action:
-            - sns:Publish
+              - sns:Publish
           Resource:
-            Ref: InternalErrorBridgeTopic
+              Ref: InternalErrorBridgeTopic
 
 plugins:
     - serverless-webpack
     - serverless-offline
+    - serverless-dotenv-plugin
+
 custom:
     serverless-offline:
         httpPort: 3001
@@ -43,7 +49,6 @@ custom:
 functions:
     auth:
         handler: ./src/handlers/http/auth.handler
-        environment: ${file(./src/configs/${self:provider.stage}.json)}
         #    The following are a few example events you can configure
         #    NOTE: Please make sure to change your handler code to work with those events
         #    Check the event documentation for details
@@ -63,7 +68,6 @@ functions:
 
     user:
         handler: ./src/handlers/http/user.handler
-        environment: ${file(./src/configs/${self:provider.stage}.json)}
         events:
             - http:
                   path: /user/{proxy+}
@@ -72,7 +76,6 @@ functions:
 
     demo:
         handler: ./src/handlers/http/demo.handler
-        environment: ${file(./src/configs/${self:provider.stage}.json)}
         events:
             - http:
                   path: /api/demo/sample/{proxy+}
@@ -83,16 +86,15 @@ functions:
         handler: ./src/handlers/examplePollWorker.handler
         reservedConcurrency: 2
         timeout: 900
-        environment: ${file(./src/configs/${self:provider.stage}.json)}
         events:
             - sqs:
                   arn:
                       Fn::GetAtt:
                           - ExamplePollWorkerQueue
                           - Arn
-                   # This is the amount of the messages in the queue that will be sent to one handler at any
-                   # given time. IMPORTANT: if the handler errors it will put the entire batch in the queue
-                   # even if only one of the batches fails.
+                      # This is the amount of the messages in the queue that will be sent to one handler at any
+                      # given time. IMPORTANT: if the handler errors it will put the entire batch in the queue
+                      # even if only one of the batches fails.
                   batchSize: 1
 
     exampleQueuer:
@@ -105,10 +107,8 @@ functions:
                   description: 'Scheduled cron for Example integration'
                   rate: cron(0 * ? * * *)
         timeout: 600
-        environment: ${file(./src/configs/${self:provider.stage}.json)}
         onError:
             Ref: InternalErrorBridgeTopic
-
 
 resources:
     Resources:

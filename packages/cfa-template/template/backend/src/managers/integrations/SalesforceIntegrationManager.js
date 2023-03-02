@@ -46,13 +46,12 @@ class SalesforceIntegrationManager extends IntegrationManager {
                 limit: 500,
             },
         );
-        console.log(res.length)
         const formatted = res.map(item => {
             const formattedItem = {...item};
             formattedItem.attributes = 'Opportunity';
-            formattedItem.Owner = item.Owner.Name;
-            formattedItem.OwnerEmail = item.Owner.Email;
-            formattedItem.Account = item.Account.Name;
+            formattedItem.Owner = item?.Owner?.Name;
+            formattedItem.OwnerEmail = item?.Owner?.Email;
+            formattedItem.Account = item?.Account?.Name;
 
             return formattedItem
         })

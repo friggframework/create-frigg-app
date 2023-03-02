@@ -5,6 +5,7 @@ module.exports = catchAsyncError(async (req, res, next) => {
     const authorizationHeader = req.headers.authorization;
 
     if (authorizationHeader) {
+        console.log('JON >>> authorizationHeader', authorizationHeader);
         // Removes "Bearer " and trims
         const token = authorizationHeader.split(' ')[1].trim();
         // Load user for later middleware/routes to use

@@ -16,6 +16,7 @@ class UserManager {
 
         return (async () => {
             const token = get(params, 'token', null);
+            console.log('JON >>> token', token);
 
             if (token) {
                 const jsonToken =
@@ -50,11 +51,7 @@ class UserManager {
         }
         const hashword = get(params, 'password');
         const appUserId = get(params, 'appUserId', null);
-        const organizationUserId = get(
-            params,
-            'organizationUserId',
-            null
-        );
+        const organizationUserId = get(params, 'organizationUserId', null);
 
         const user = await this.IndividualUser.create({
             email,
@@ -86,9 +83,7 @@ class UserManager {
         const username = get(params, 'username');
         const password = get(params, 'password');
 
-        const user = await this.IndividualUser.getUserByUsername(
-            username
-        );
+        const user = await this.IndividualUser.getUserByUsername(username);
 
         if (!user) {
             throw Boom.unauthorized('incorrect username or password');
@@ -103,7 +98,7 @@ class UserManager {
         return userManager;
     }
 
-    async createUserToken(minutes) {
+    async createUserToken() {
         const rawToken = crypto.randomBytes(20).toString('hex');
         const createdToken = await Token.createTokenWithExpire(
             this.individualUser.id,

@@ -3,7 +3,7 @@ const { createApp } = require('../../app');
 const userRoute = require('../../src/routers/user');
 const authRoute = require('../../src/routers/auth');
 const demoRoute = require('../../src/routers/demo');
-const ModuleManager = require('@friggframework/api-module-salesforce/manager')
+const ModuleManager = require('@friggframework/api-module-salesforce/manager');
 const { default: mongoose } = require('mongoose');
 
 const app = createApp((app) => {
@@ -38,7 +38,7 @@ describe('Users process tests', () => {
     let credentials = { username: 'demo@lefthook.com', password: 'demo' };
     let token;
 
-    beforeAll(() => {
+    beforeAll(async () => {
         mongoose.connect(process.env.MONGO_URI);
     });
 
@@ -96,11 +96,12 @@ describe('Users process tests', () => {
     });
 
     it('Registers API authorization process', async () => {
-        jest
-            .spyOn(ModuleManager.prototype, 'processAuthorizationCallback')
-            .mockImplementation(() => {
-                return 'Hello this is a token';
-            });
+        jest.spyOn(
+            ModuleManager.prototype,
+            'processAuthorizationCallback'
+        ).mockImplementation(() => {
+            return 'Hello this is a token';
+        });
 
         const payload = {
             entityType: 'salesforce',

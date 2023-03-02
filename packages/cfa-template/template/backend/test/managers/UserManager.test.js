@@ -21,7 +21,6 @@ describe('UserManager', () => {
         await User.deleteMany();
     });
     test('should create a login token', async () => {
-        console.log('bar');
         const token = await this.manager.createUserToken();
         await new UserManager({ token });
     });
