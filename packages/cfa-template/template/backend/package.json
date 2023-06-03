@@ -29,7 +29,7 @@
         "@friggframework/module-plugin": "^1.0.25",
         "@hapi/boom": "^7.4.11",
         "bcryptjs": "^2.4.3",
-        "body-parser": "^1.19.0",
+        "body-parser": "^1.20.2",
         "chai": "^4.3.7",
         "chai-http": "^4.3.0",
         "cors": "^2.8.5",
