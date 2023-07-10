@@ -1,15 +1,15 @@
 import IntegrationDropdown from './IntegrationDropdown';
-import IntegrationHorizontal from './IntegrationHorizontal';
 import IntegrationList from './IntegrationList';
 import IntegrationSkeleton from './IntegrationSkeleton';
-import IntegrationVertical from './IntegrationVertical';
+import IntegrationItem from './IntegrationItem';
+import CategoryFilter from './CategoryFilter';
 import ToggleSwitch from './ToggleSwitch';
 
 export {
 	IntegrationDropdown as Dropdown,
-	IntegrationHorizontal as Horizontal,
-	IntegrationList as List,
+ 	IntegrationList as List,
 	IntegrationSkeleton as Skeleton,
-	IntegrationVertical as Vertical,
+	IntegrationItem as Item,
+	CategoryFilter as Filter,
 	ToggleSwitch as Switch,
 };

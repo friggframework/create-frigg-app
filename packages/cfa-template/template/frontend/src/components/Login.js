@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
+import { redirect } from 'react-router-dom';
 import serializeForm from 'form-serialize';
 import FormValidator from './FormValidator';
 import API from '../api/api';
@@ -48,7 +49,7 @@ export class Login extends Component {
 		const jwt = sessionStorage.getItem('jwt');
 		if (jwt) {
 			this.props.dispatch(setAuthToken(jwt)); // dispatch the auth token to the store
-			this.props.history.push('/integrations');
+			redirect('/integrations');
 		}
 	}
 
@@ -79,7 +80,7 @@ export class Login extends Component {
 				const { token } = data;
 				sessionStorage.setItem('jwt', token);
 				this.props.dispatch(setAuthToken(token)); // dispatch the auth token to the store
-				this.props.history.push('/dashboard');
+				redirect('/dashboard');
 			} else {
 				return toast.error(`Failed to login using this base url: ${process.env.REACT_APP_API_BASE_URL}`);
 			}

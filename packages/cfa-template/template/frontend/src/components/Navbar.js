@@ -1,6 +1,5 @@
 import React from 'react';
 import { SearchIcon, BellIcon } from '@heroicons/react/outline';
-import { withRouter } from 'react-router';
 
 function Navbar() {
 	return (
@@ -54,4 +53,4 @@ function Navbar() {
 		</>
 	);
 }
-export default withRouter(Navbar);
+export default Navbar;

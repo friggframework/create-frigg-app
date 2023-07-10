@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { logoutUser } from '../actions/logout';
 
 // login component is a place for a user to enter a email and password
@@ -11,7 +11,7 @@ class Logout extends Component {
 	}
 
 	render() {
-		return <Redirect to={'/'} />;
+		return <Navigate to={'/'} />;
 	}
 }
 

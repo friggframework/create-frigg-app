@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { redirect } from 'react-router-dom';
 import qString from 'query-string';
 import { setAuthToken } from '../actions/auth';
 import API from '../api/api';
@@ -39,7 +40,7 @@ class RedirectFromAuth extends Component {
 			const integration = await this.api.createIntegration(targetEntity.entity_id, targetEntity.entity_id, config);
 
 			if (!integration.error) {
-				this.props.history.push('/integrations');
+				redirect('/integrations');
 			} else {
 				alert(integration.error);
 			}

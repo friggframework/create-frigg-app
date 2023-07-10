@@ -1,136 +1,96 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import IntegrationHorizontal from './IntegrationHorizontal';
-import IntegrationVertical from './IntegrationVertical';
+import React, { useState, useContext, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Item from './IntegrationItem';
 import IntegrationSkeleton from './IntegrationSkeleton';
 import { setIntegrations } from '../../actions/integrations';
 import IntegrationUtils from '../../utils/IntegrationUtils';
 import API from '../../api/api';
 import { logoutUser } from '../../actions/logout';
 import { setAuthToken } from '../../actions/auth';
+import { CategoryContext } from '../../contexts/CategoryContext';
 import config from '../../frigg.config';
 
-class IntegrationList extends Component {
-	constructor(props) {
-		super(props);
+function IntegrationList() {
+  const dispatch = useDispatch();
+  const { selectedCategory } = useContext(CategoryContext);
+  const [authToken, integrations] = useSelector(({ auth, integrations }) => [auth.token, integrations]);
+  const [displayedIntegrations, setDisplayedIntegrations] = useState(null);
+  const [installedIntegrations, setInstalledIntegrations] = useState([]);
 
-		this.state = {
-			installedIntegrations: [],
-		};
-	}
+  useEffect(() => {
+    const fetchData = async () => {
+      const jwt = sessionStorage.getItem('jwt');
+      if (jwt) {
+        if (jwt !== authToken) {
+          dispatch(setAuthToken(jwt));
+        }
+        refreshIntegrations();
+      }
+    }
+    fetchData();
+  }, []);
 
-	async refreshIntegrations(props) {
-		const api = new API();
+  useEffect(() => {
+    if (integrations) {
+      let integrationUtils = new IntegrationUtils(integrations.integrations);
+      integrationUtils.getPossibleIntegrations();
+    
+      if (integrationUtils) {
+        setDisplayedIntegrations(renderCombinedIntegrations(
+          integrationUtils.getActiveAndPossibleIntegrationsCombined()
+        ));
+      }
+    }
+  }, [integrations, selectedCategory]);
 
-		const jwt = sessionStorage.getItem('jwt');
-		api.setJwt(jwt);
+  const refreshIntegrations = async () => {
+    const api = new API();
+    const jwt = sessionStorage.getItem('jwt');
+    api.setJwt(jwt);
+    const integrations = await api.listIntegrations();
+    if (integrations.error) dispatch(logoutUser());
+    dispatch(setIntegrations(integrations));
+  }
 
-		const integrations = await api.listIntegrations();
+  const setInstalled = (data) => {
+    const items = [data, ...installedIntegrations];
+    setInstalledIntegrations({ installedIntegrations: items });
+  };
 
-		if (integrations.error) this.props.dispatch(logoutUser());
+  const integrationComponent = (integration) => (
+    <Item
+      data={integration}
+      handleInstall={setInstalled}
+      refreshIntegrations={refreshIntegrations}
+      key={`combined-integration-${integration.type}`} />
+  );
 
-		await props.dispatch(setIntegrations(integrations));
-	}
-	async componentDidMount() {
-		const jwt = sessionStorage.getItem('jwt');
-		if (jwt !== this.props.authToken) {
-			await this.props.dispatch(setAuthToken(jwt));
-		}
+  const renderCombinedIntegrations = (combinedIntegrations) => {
+    if (selectedCategory === 'Recently added') {
+      return combinedIntegrations.map((integration) => integrationComponent(integration));
+    }
+    if (selectedCategory === 'Installed') {
+      return installedIntegrations.map((integration) => integrationComponent(integration));
+    }
+    return combinedIntegrations
+      .filter((integration) => integration.display.description === selectedCategory)
+      .map((integration) => integrationComponent(integration));
+  };
 
-		if (this.props.authToken) {
-			await this.refreshIntegrations(this.props);
-		}
-	}
-
-	setInstalled = (data) => {
-		const items = [data, ...this.state.installedIntegrations];
-		console.log(data);
-		this.setState({ installedIntegrations: items });
-	};
-
-	// Temporary, refactor to higher order component pattern
-	// https://reactjs.org/docs/higher-order-components.html
-	integrationComponent = (integration) => {
-		if (config.componentLayout === 'default-horizontal') {
-			return (
-				<IntegrationHorizontal
-					data={integration}
-					key={`combined-integration-${integration.type}`}
-					handleInstall={this.setInstalled}
-					refreshIntegrations={this.refreshIntegrations}
-				/>
-			);
-		}
-		if (config.componentLayout === 'default-vertical') {
-			return (
-				<IntegrationVertical
-					data={integration}
-					key={`combined-integration-${integration.type}`}
-					handleInstall={this.setInstalled}
-					refreshIntegrations={this.refreshIntegrations}
-				/>
-			);
-		}
-	};
-
-	renderCombinedIntegrations = (combinedIntegrations) => {
-		if (this.props.integrationType == 'Recently added') {
-			return combinedIntegrations.map((integration) => this.integrationComponent(integration));
-		}
-		if (this.props.integrationType == 'Installed') {
-			console.log(this.state.installedIntegrations);
-			return this.state.installedIntegrations.map((integration) => this.integrationComponent(integration));
-		}
-		return combinedIntegrations
-			.filter((integration) => integration.display.description == this.props.integrationType)
-			.map((integration) => this.integrationComponent(integration));
-	};
-
-	render() {
-		let integrationUtils = null;
-		let displayedIntegrations = null;
-
-		if (this.props.integrations) {
-			integrationUtils = new IntegrationUtils(this.props.integrations.integrations);
-			console.log(integrationUtils.getPrimaryType());
-			integrationUtils.getPossibleIntegrations();
-		}
-		if (integrationUtils) {
-			displayedIntegrations = this.renderCombinedIntegrations(
-				integrationUtils.getActiveAndPossibleIntegrationsCombined()
-			);
-		}
-
-		return (
-			<>
-				{integrationUtils !== null ? (
-					displayedIntegrations
-				) : (
-					<div className="grid gap-6 lg:col-span-1 lg:grid-cols-1 xl:col-span-2 xl:grid-cols-2 2xl:col-span-3 2xl:grid-cols-3">
-						<IntegrationSkeleton layout={config.componentLayout} />
-						<IntegrationSkeleton layout={config.componentLayout} />
-						<IntegrationSkeleton layout={config.componentLayout} />
-						<IntegrationSkeleton layout={config.componentLayout} />
-						<IntegrationSkeleton layout={config.componentLayout} />
-						<IntegrationSkeleton layout={config.componentLayout} />
-						<IntegrationSkeleton layout={config.componentLayout} />
-						<IntegrationSkeleton layout={config.componentLayout} />
-						<IntegrationSkeleton layout={config.componentLayout} />
-					</div>
-				)}
-				{integrationUtils !== null && displayedIntegrations.length == 0 && (
-					<p>No {this.props.integrationType} integrations found.</p>
-				)}
-			</>
-		);
-	}
+  return (
+    <>
+      {displayedIntegrations || (
+        <div className="grid gap-6 lg:col-span-1 lg:grid-cols-1 xl:col-span-2 xl:grid-cols-2 2xl:col-span-3 2xl:grid-cols-3">
+          {Array.from(Array(9), (_, i) =>
+            <IntegrationSkeleton key={i} layout={config.componentLayout} />
+          )}
+        </div>
+      )}
+      {displayedIntegrations?.length == 0 && (
+        <p>No {selectedCategory} integrations found.</p>
+      )}
+    </>
+  );
 }
 
-function mapStateToProps({ auth, integrations }) {
-	return {
-		authToken: auth.token,
-		integrations,
-	};
-}
-
-export default connect(mapStateToProps)(IntegrationList);
+export default IntegrationList;
