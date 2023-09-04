@@ -38,7 +38,7 @@
         "lodash": "^4.17.15",
         "md5": "^2.3.0",
         "moment": "^2.27.0",
-        "mongoose": "^6.2.1",
+        "mongoose": "^6.12.0",
         "node-fetch": "^2.6.0",
         "serverless-http": "^2.5.0",
         "source-map-support": "^0.5.20"
