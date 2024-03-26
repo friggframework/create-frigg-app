@@ -33,7 +33,7 @@
         "chai": "^4.3.7",
         "chai-http": "^4.3.0",
         "cors": "^2.8.5",
-        "express": "^4.17.1",
+        "express": "^4.19.2",
         "express-async-handler": "^1.1.4",
         "lodash": "^4.17.15",
         "md5": "^2.3.0",
