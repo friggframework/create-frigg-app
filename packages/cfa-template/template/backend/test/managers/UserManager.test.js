@@ -1,3 +1,4 @@
+const { connectToDatabase } = require('@friggframework/core');
 /**
  * Tests UserManager class
  *
@@ -6,7 +7,6 @@
 const fetch = require('node-fetch');
 const UserManager = require('../../src/managers/UserManager');
 const { User } = require('../../src/models/User');
-const { connectToDatabase } = require('@friggframework/database/mongo');
 
 const loginCredentials = { username: 'admin', password: 'password1' };
 

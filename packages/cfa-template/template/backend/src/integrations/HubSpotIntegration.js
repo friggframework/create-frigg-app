@@ -1,7 +1,7 @@
-const { IntegrationManager } = require('@friggframework/integrations');
-const {get} = require("@friggframework/assertions");
+const { get, IntegrationBase, Options } = require('@friggframework/core');
+const { Definition: HubSpotModule } = require('@friggframework/api-module-hubspot');
 
-class HubSpotIntegrationManager extends IntegrationManager {
+class HubSpotIntegration extends IntegrationBase {
     static Config = {
         name: 'hubspot',
         version: '1.0.0',
@@ -9,17 +9,28 @@ class HubSpotIntegrationManager extends IntegrationManager {
         events: ['EXAMPLE_EVENT'],
     };
 
-    constructor(params) {
-        super(params);
+    static Options =
+        new Options({
+            module: HubSpotModule,
+            integrations: [HubSpotModule],
+            display: {
+                name: 'HubSpot',
+                description: 'Sales & CRM, Marketing',
+                category: 'Sales & CRM, Marketing',
+                detailsUrl: 'https://hubspot.com',
+                icon: 'https://friggframework.org/assets/img/hubspot.jpeg',
+            },
+            hasUserConfig: true,
+        });
+
+    static modules = {
+        hubspot: HubSpotModule,
     }
 
     /**
      * HANDLE EVENTS
      */
     async receiveNotification(notifier, event, object = null) {
-        this.primaryInstance = notifier.primaryInstance;
-        this.targetInstance = notifier.targetInstance;
-        this.integration = notifier.integration;
         if (event === 'EXAMPLE_EVENT') {
             return this.processReportData(object);
         }
@@ -29,7 +40,7 @@ class HubSpotIntegrationManager extends IntegrationManager {
      * ALL CUSTOM/OPTIONAL METHODS FOR AN INTEGRATION MANAGER
      */
     async getSampleData() {
-        const res = await this.targetInstance.api.searchDeals()
+        const res = await this.target.api.searchDeals()
         console.log(res.results.length)
         const formatted = res.results.map(deal => {
             const formattedDeal = {
@@ -51,24 +62,22 @@ class HubSpotIntegrationManager extends IntegrationManager {
     /**
      * ALL REQUIRED METHODS FOR AN INTEGRATION MANAGER
      */
-    async processCreate(params) {
+    async onCreate(params) {
         // Validate that we have all of the data we need
         // Set integration status as makes sense. Default ENABLED
         // TODO turn this into a validateConfig method/function
         this.integration.status = 'NEEDS_CONFIG';
-        await this.integration.save();
+        await this.record.save();
     }
 
-    async processUpdate(params) {
+    async onUpdate(params) {
         const newConfig = get(params, 'config');
-        const oldConfig = this.integration.config;
+        const oldConfig = this.record.config;
         // Just save whatever
-        this.integration.markModified('config');
-        await this.integration.save();
+        this.record.markModified('config');
+        await this.record.save();
         return this.validateConfig();
     }
-
-    async processDelete(params) {}
 
     async getConfigOptions() {
         const options = {}
@@ -76,4 +85,4 @@ class HubSpotIntegrationManager extends IntegrationManager {
     }
 }
 
-module.exports = HubSpotIntegrationManager;
+module.exports = HubSpotIntegration;

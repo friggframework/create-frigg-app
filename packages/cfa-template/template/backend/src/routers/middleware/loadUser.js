@@ -1,5 +1,5 @@
 const catchAsyncError = require('express-async-handler');
-const UserManager = require('../../managers/UserManager');
+const {User} = require('../../../backend');
 
 module.exports = catchAsyncError(async (req, res, next) => {
     const authorizationHeader = req.headers.authorization;
@@ -8,7 +8,7 @@ module.exports = catchAsyncError(async (req, res, next) => {
         // Removes "Bearer " and trims
         const token = authorizationHeader.split(' ')[1].trim();
         // Load user for later middleware/routes to use
-        req.userManager = await new UserManager({ token });
+        req.user = await User.newUser({ token });
     }
 
     return next();

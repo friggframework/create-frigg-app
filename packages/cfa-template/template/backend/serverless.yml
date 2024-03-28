@@ -10,13 +10,7 @@ provider:
     environment:
         STAGE: ${opt:stage}
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
-        EXAMPLE_POLL_WORKER_QUEUE: { Ref: ExamplePollWorkerQueue }
     iamRoleStatements:
-        - Effect: Allow
-          Action:
-            - sqs:*
-          Resource:
-            - { 'Fn::GetAtt': ['ExamplePollWorkerQueue', 'Arn'] }
         - Effect: Allow
           Action:
             - sns:Publish
@@ -29,7 +23,6 @@ plugins:
 custom:
     serverless-offline:
         httpPort: 3001
-    ExamplePollWorkerQueue: ${self:service}--${self:provider.stage}-ExamplePollWorker
     webpack:
         webpackConfig: 'webpack.config.js' # Name of webpack configuration file
         includeModules:
@@ -42,7 +35,7 @@ custom:
 
 functions:
     auth:
-        handler: ./src/handlers/http/auth.handler
+        handler: ./src/routers/auth.handler
         environment: ${file(./src/configs/${self:provider.stage}.json)}
         #    The following are a few example events you can configure
         #    NOTE: Please make sure to change your handler code to work with those events
@@ -62,7 +55,7 @@ functions:
                   cors: true
 
     user:
-        handler: ./src/handlers/http/user.handler
+        handler: ./src/routers/user.handler
         environment: ${file(./src/configs/${self:provider.stage}.json)}
         events:
             - http:
@@ -71,7 +64,7 @@ functions:
                   cors: true
 
     demo:
-        handler: ./src/handlers/http/demo.handler
+        handler: ./src/routers/demo.handler
         environment: ${file(./src/configs/${self:provider.stage}.json)}
         events:
             - http:
@@ -79,51 +72,8 @@ functions:
                   method: ANY
                   cors: true
 
-    pollWorker:
-        handler: ./src/handlers/examplePollWorker.handler
-        reservedConcurrency: 2
-        timeout: 900
-        environment: ${file(./src/configs/${self:provider.stage}.json)}
-        events:
-            - sqs:
-                  arn:
-                      Fn::GetAtt:
-                          - ExamplePollWorkerQueue
-                          - Arn
-                   # This is the amount of the messages in the queue that will be sent to one handler at any
-                   # given time. IMPORTANT: if the handler errors it will put the entire batch in the queue
-                   # even if only one of the batches fails.
-                  batchSize: 1
-
-    exampleQueuer:
-        handler: ./src/handlers/exampleQueuer.handler
-        # the number of concurrent invocations allowed by this handler
-        reservedConcurrency: 10
-        events:
-            - schedule:
-                  name: ${self:service}-${self:provider.stage}-ExampleQueuer
-                  description: 'Scheduled cron for Example integration'
-                  rate: cron(0 * ? * * *)
-        timeout: 600
-        environment: ${file(./src/configs/${self:provider.stage}.json)}
-        onError:
-            Ref: InternalErrorBridgeTopic
-
-
 resources:
     Resources:
-        ExamplePollWorkerQueue:
-            Type: 'AWS::SQS::Queue'
-            Properties:
-                QueueName: ${self:custom.ExamplePollWorkerQueue}
-                VisibilityTimeout: 10
-                MessageRetentionPeriod: 60
-                RedrivePolicy:
-                    maxReceiveCount: 1
-                    deadLetterTargetArn:
-                        Fn::GetAtt:
-                            - InternalErrorQueue
-                            - Arn
         InternalErrorQueue:
             Type: 'AWS::SQS::Queue'
             Properties:

@@ -1,15 +1,16 @@
+const { createHandler, flushDebugLog } = require('@friggframework/core');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const Boom = require('@hapi/boom');
-const loadUserManager = require('./src/routers/middleware/loadUserManager');
-const { flushDebugLog } = require('@friggframework/logs');
+const loadUserManager = require('./src/routers/middleware/loadUser');
+const serverlessHttp = require('serverless-http');
 
 const createApp = (applyMiddleware) => {
     const app = express();
 
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded());
+    app.use(bodyParser.json({ limit: '10mb' }));
+    app.use(bodyParser.urlencoded({ extended: true }));
     app.use(
         cors({
             origin: '*',
@@ -37,6 +38,20 @@ const createApp = (applyMiddleware) => {
     });
 
     return app;
-};
+}
 
-module.exports = { createApp };
+function createAppHandler(eventName, router, shouldUseDatabase = true) {
+    const app = createApp((app) => {
+        app.use(router);
+    });
+    return createHandler({
+        eventName,
+        method: serverlessHttp(app),
+        shouldUseDatabase,
+    });
+}
+
+module.exports = {
+    createApp,
+    createAppHandler,
+};

@@ -242,13 +242,12 @@ function createApp(name, verbose, version, template, useYarn, usePnp) {
             "frontend"
         ],
         devDependencies: {
-            concurrently: "^7.2.1"
+            "concurrently": "^8.2.2"
         },
         scripts: {
-            start: "concurrently \"cd backend && npm start\" \"cd frontend && npm start\"",
+            start: "concurrently \"cd backend && npm run backend-start\" \"cd frontend && npm run frontend-start\"",
             test: "npm test -workspaces"
         }
-
     };
     fs.writeFileSync(
         path.join(root, 'package.json'),

@@ -1,10 +1,10 @@
-const HubSpotIntegrationManager = require('../../../src/managers/integrations/HubSpotIntegrationManager');
+const { MockAPI } = require('@friggframework/api-module-hubspot/mockApi');
+const { Integration } = require('@friggframework/core');
+const HubSpotIntegrationManager = require('../../../src/integrations/HubSpotIntegration');
 const HubSpotEntityManager = require('../../../src/managers/entities/HubSpotManager');
 const PrimaryEntityManager = require('../../../src/managers/entities/ConnectWiseManager');
-// const MockAPI = require('@friggframework/api-module-hubspot/mockApi');
 const mockDealsResponse = require('../../fixtures/hubspot/deals.json');
 const mongoose = require("mongoose");
-const {Integration} = require("@friggframework/integrations");
 
 function MockedIntegration() {
     return {

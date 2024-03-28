@@ -1,6 +1,6 @@
+const { Integration } = require('@friggframework/core');
 const ExampleQueuer = require('../../../src/workers/examples/ExampleQueuer');
 const QueuerUtil = require('../../../src/utils/QueuerUtil');
-const { Integration } = require('@friggframework/integrations');
 const messagesReceived = [];
 
 jest.mock('aws-sdk', () => {

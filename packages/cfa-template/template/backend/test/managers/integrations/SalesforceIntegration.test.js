@@ -1,4 +1,4 @@
-const SalesforceIntegrationManager = require('../../../src/managers/integrations/SalesforceIntegrationManager');
+const SalesforceIntegrationManager = require('../../../src/integrations/LinearIntegration');
 const MockAPI = require('../../../src/modules/HubSpot/mocks/apiMock');
 
 const testUserId = 9001;

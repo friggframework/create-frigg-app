@@ -1,9 +1,9 @@
+const { ModuleManager } = require('@friggframework/api-module-salesforce/manager');
 const request = require('supertest');
 const { createApp } = require('../../app');
 const userRoute = require('../../src/routers/user');
 const authRoute = require('../../src/routers/auth');
 const demoRoute = require('../../src/routers/demo');
-const ModuleManager = require('@friggframework/api-module-salesforce/manager')
 const { default: mongoose } = require('mongoose');
 
 const app = createApp((app) => {

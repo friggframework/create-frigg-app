@@ -1,3 +1,4 @@
+const { connectToDatabase } = require('@friggframework/core');
 /**
  * @group interactive
  */
@@ -20,7 +21,6 @@ const app = createApp((app) => {
 const Authenticator = require('../utils/Authenticator');
 const UserManager = require('../../src/managers/UserManager');
 const User = require('../../src/models/User');
-const {connectToDatabase} = require("@friggframework/database/mongo");
 
 const loginCredentials = { username: 'test' + Date.now(), password: 'test' };
 const primaryDetails = {

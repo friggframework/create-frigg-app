@@ -1,9 +1,10 @@
+const { checkRequiredParams } = require('@friggframework/core');
 const express = require('express');
 const Boom = require('@hapi/boom');
+const { createAppHandler} = require('../../app');
 const catchAsyncError = require('express-async-handler');
-const RouterUtil = require('../utils/RouterUtil');
 const { requireLoggedInUser } = require('./middleware/requireLoggedInUser');
-const IntegrationManager = require('../managers/integrations/IntegrationManagerFactory');
+const {integrationFactory} = require('../../backend');
 
 const router = express();
 
@@ -11,18 +12,20 @@ router.all('/api/demo*', requireLoggedInUser);
 
 router.route('/api/demo/sample/:integrationId').get(
     catchAsyncError(async (req, res) => {
-        const params = RouterUtil.checkRequiredParams(req.params, [
-            'integrationId',
-        ]);
-        const integrationManagerInstance =
-            await IntegrationManager.getInstanceFromIntegrationId({
+        const params = checkRequiredParams(req.params, ['integrationId']);
+        const integration = await integrationFactory.getInstanceFromIntegrationId({
                 integrationId: params.integrationId,
-                userId: req.userManager.getUserId(),
+                userId: req.user.getUserId(),
             });
-
-        const sampleData = await integrationManagerInstance.getSampleData();
+        const sampleData = await integration.getSampleData();
         res.json(sampleData);
     })
 );
 
-module.exports = router;
+const handler = createAppHandler(
+    'HTTP Event: Demo',
+    router
+);
+
+
+module.exports = { handler, router } ;
