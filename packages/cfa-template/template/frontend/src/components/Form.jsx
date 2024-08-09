@@ -1,8 +1,8 @@
-import React from "react";
-import { JsonForms } from "@jsonforms/react";
-import { materialRenderers } from "@jsonforms/material-renderers";
-import { APISearchDropdownTester } from "./customTesterFunction";
-import APISearchDropdownRenderer from "./APISearchDropdownRenderer";
+import React from 'react';
+import { JsonForms } from '@jsonforms/react';
+import { materialRenderers } from '@jsonforms/material-renderers';
+import { APISearchDropdownTester } from './customTesterFunction';
+import APISearchDropdownRenderer from './APISearchDropdownRenderer.jsx';
 
 export const Form = ({ schema, uiSchema, data, onChange, renderers }) => {
   return (

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { EllipsisVertical, Unplug, Zap } from "lucide-react";
+import React, { useState } from 'react';
+import { EllipsisVertical, Unplug, Zap } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,10 +7,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { UserActionModal } from "./modals";
-import { useIntegrationContext } from "../../context/IntegrationContext";
-import { useHistory } from "react-router-dom";
+} from '../ui/dropdown-menu';
+import { UserActionModal } from './modals';
+import { useIntegrationContext } from '../../context/IntegrationContext.jsx';
+import { useHistory } from 'react-router-dom';
 
 function QuickActionsMenu({
   disconnectIntegration,
@@ -31,7 +31,7 @@ function QuickActionsMenu({
   }
 
   async function handleMenuItemClick(userAction) {
-    if (userAction.action === "SAMPLE_DATA") {
+    if (userAction.action === 'SAMPLE_DATA') {
       await getSampleData();
       return;
     }

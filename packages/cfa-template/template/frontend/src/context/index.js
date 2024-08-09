@@ -1,5 +1,5 @@
-import { ApplicationProvider } from "./ApplicationContext";
-import { FormProvider } from "./FormContext";
-import { IntegrationProvider } from "./IntegrationContext";
+import { ApplicationProvider } from './ApplicationContext.jsx';
+import { FormProvider } from './FormContext.jsx';
+import { IntegrationProvider } from './IntegrationContext.jsx';
 
 export { ApplicationProvider, FormProvider, IntegrationProvider };

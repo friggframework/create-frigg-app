@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { showModalForm } from "../../actions/modalForm";
-import { setIntegrations } from "../../actions/integrations";
-import { CircleAlert } from "lucide-react"
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { showModalForm } from '../../actions/modalForm';
+import { setIntegrations } from '../../actions/integrations';
+import { CircleAlert } from 'lucide-react';
 
-import Api from "../../api/api";
-import IntegrationDropdown from "../Integration/IntegrationDropdown";
-import {Button} from "../ui/button";
+import Api from '../../api/api';
+import IntegrationDropdown from './IntegrationDropdown.jsx';
+import { Button } from '../ui/button';
 
 function IntegrationVertical(props) {
   const authToken = useSelector((state) => state.auth.token);
@@ -17,7 +17,7 @@ function IntegrationVertical(props) {
   const { hasUserConfig, type } = props.data;
 
   const [isProcessing, setIsProcessing] = useState(false);
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState('');
   const [installed, setInstalled] = useState([]);
 
   const api = new Api();
@@ -25,11 +25,11 @@ function IntegrationVertical(props) {
 
   const getAuthorizeRequirements = async () => {
     setIsProcessing(true);
-    const authorizeData = await api.getAuthorizeRequirements(type, "");
-    if (authorizeData.type === "oauth2") {
+    const authorizeData = await api.getAuthorizeRequirements(type, '');
+    if (authorizeData.type === 'oauth2') {
       window.location.href = authorizeData.url;
     }
-    if (authorizeData.type !== "oauth2") enableModalForm();
+    if (authorizeData.type !== 'oauth2') enableModalForm();
   };
 
   const enableModalForm = () => {
@@ -49,14 +49,14 @@ function IntegrationVertical(props) {
   const getRequestType = () => {
     let type;
     switch (props.data.status) {
-      case "NEEDS_CONFIG":
-        type = "INITIAL";
+      case 'NEEDS_CONFIG':
+        type = 'INITIAL';
         break;
-      case "ENABLED":
-        type = "CONFIGURE";
+      case 'ENABLED':
+        type = 'CONFIGURE';
         break;
       default:
-        type = "AUTHORIZE";
+        type = 'AUTHORIZE';
     }
     return type;
   };
@@ -66,21 +66,21 @@ function IntegrationVertical(props) {
   };
 
   const disconnectIntegration = async () => {
-    console.log("Disconnect Clicked!");
+    console.log('Disconnect Clicked!');
     await api.deleteIntegration(props.data.id);
     const integrations = await api.listIntegrations();
     if (!integrations.error) {
       props.dispatch(setIntegrations(integrations));
     }
     setInstalled([]);
-    setStatus("");
+    setStatus('');
   };
 
   const authorizeMock = () => {
     setIsProcessing(true);
 
     setTimeout(() => {
-      setStatus("NEEDS_CONFIG");
+      setStatus('NEEDS_CONFIG');
       setInstalled([props.data]);
       props.handleInstall(props.data, props.status);
       setIsProcessing(false);
@@ -89,7 +89,7 @@ function IntegrationVertical(props) {
 
   const disconnectMock = () => {
     setInstalled([]);
-    setStatus("");
+    setStatus('');
   };
 
   return (
@@ -100,15 +100,15 @@ function IntegrationVertical(props) {
       >
         <div className="flex w-full h-[24px]">
           <div className="inline-flex relative mr-auto">
-            {status && status === "NEEDS_CONFIG" && (
+            {status && status === 'NEEDS_CONFIG' && (
               <p className="inline-flex text-xs font-medium text-red-300 text-center">
                 <CircleAlert className="w-4 h-4 mr-1" /> Configure
               </p>
             )}
           </div>
           <div className="inline-flex relative justify-end ml-auto">
-            {(status && status === "ENABLED") ||
-              (status === "NEEDS_CONFIG" && (
+            {(status && status === 'ENABLED') ||
+              (status === 'NEEDS_CONFIG' && (
                 <IntegrationDropdown
                   getSampleData={getSampleData}
                   disconnectIntegration={disconnectIntegration}
@@ -133,8 +133,8 @@ function IntegrationVertical(props) {
         </div>
         <div className="items-center pb-3">
           <div className="relative">
-            {(status && status === "ENABLED") ||
-              (status === "NEEDS_CONFIG" && (
+            {(status && status === 'ENABLED') ||
+              (status === 'NEEDS_CONFIG' && (
                 <button
                   onClick={disconnectIntegration}
                   className="w-full px-5 py-3 font-medium leading-5 text-center text-primary transition-colors duration-150 rounded-lg border-2 border-purple-400 hover:border-purple-600 hover:bg-purple-600 hover:text-white focus:outline-none focus:shadow-outline-purple"
@@ -168,7 +168,7 @@ function IntegrationVertical(props) {
                     ></path>
                   </svg>
                 ) : (
-                  "Connect"
+                  'Connect'
                 )}
               </Button>
             )}

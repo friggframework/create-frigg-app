@@ -1,8 +1,8 @@
-import * as React from "react";
-import { useEffect, useState } from "react";
-import { Form } from "./Form";
-import { useFormContext } from "../context/FormContext";
-import FormType from "../enums/FormType";
+import * as React from 'react';
+import { useEffect, useState } from 'react';
+import { Form } from './Form.jsx';
+import { useFormContext } from '../context/FormContext.jsx';
+import FormType from '../enums/FormType';
 
 export const FetchOptionsBasedOnAutoComplete = () => {
   const [formData, setFormData] = useState({});
@@ -16,41 +16,41 @@ export const FetchOptionsBasedOnAutoComplete = () => {
     setFormData(data);
   };
   const handleSubmit = () => {
-    alert("Submitted data: " + JSON.stringify(formData, null, 2));
+    alert('Submitted data: ' + JSON.stringify(formData, null, 2));
   };
 
   const sampleJsonSchema = {
-    type: "object",
+    type: 'object',
     properties: {
       companyName: {
-        type: "string",
-        title: "Enter Text",
+        type: 'string',
+        title: 'Enter Text',
         oneOf: [
           {
-            const: "foo",
-            title: "Foo",
+            const: 'foo',
+            title: 'Foo',
           },
           {
-            const: "bar",
-            title: "Bar",
+            const: 'bar',
+            title: 'Bar',
           },
           {
-            const: "foobar",
-            title: "FooBar",
+            const: 'foobar',
+            title: 'FooBar',
           },
         ],
         asyncRefresh: true,
       },
     },
-    required: ["autocomplete"],
+    required: ['autocomplete'],
   };
 
   const sampleUiSchema = {
-    type: "VerticalLayout",
+    type: 'VerticalLayout',
     elements: [
       {
-        type: "Control",
-        scope: "#/properties/autocomplete",
+        type: 'Control',
+        scope: '#/properties/autocomplete',
       },
     ],
   };

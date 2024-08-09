@@ -1,7 +1,7 @@
-import { Form } from '../../Form';
+import { Form } from '../../Form.jsx';
 import { useEffect, useState } from 'react';
 import API from '../../../api/api';
-import { LoadingSpinner } from '../../LoadingSpinner';
+import { LoadingSpinner } from '../../LoadingSpinner.jsx';
 import { Button } from '../../ui/button';
 import { useToast } from '../../ui/use-toast';
 

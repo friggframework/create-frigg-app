@@ -1,9 +1,9 @@
-import React from "react";
-import { Link, NavLink } from "react-router-dom";
-import { connect } from "react-redux";
+import React from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import {PuzzleIcon, LogOutIcon, SlidersVertical} from "lucide-react"
-import { logoutUser } from "../actions/logout";
+import { PuzzleIcon, LogOutIcon, SlidersVertical } from 'lucide-react';
+import { logoutUser } from '../actions/logout';
 
 function Sidebar({ logoutUser }) {
   return (
@@ -17,7 +17,7 @@ function Sidebar({ logoutUser }) {
             <img
               src={`https://friggframework.org/assets/img/frigg-favicon.svg`}
               alt="Logo"
-              style={{ width: 90}}
+              style={{ width: 90 }}
             />
           </span>
         </Link>

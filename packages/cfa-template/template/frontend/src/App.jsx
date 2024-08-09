@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { connect } from 'react-redux';
-import AppRouter from './AppRouter';
-import Auth from './components/Auth';
+import AppRouter from './AppRouter.jsx';
+import Auth from './components/Auth.jsx';
 import history from './utils/history';
 import {
   ApplicationProvider,

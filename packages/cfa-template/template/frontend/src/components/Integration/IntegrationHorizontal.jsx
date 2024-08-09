@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import { Settings } from "lucide-react";
-import Api from "../../api/api";
-import QuickActionsMenu from "./QuickActionsMenu";
-import { FormBasedAuthModal, IntegrationConfigurationModal } from "./modals";
-import { Switch } from "../ui/switch";
-import { Button } from "../ui/button";
-import { LoadingSpinner } from "../LoadingSpinner";
-import { useIntegrationContext } from "../../context/IntegrationContext";
+import React, { useEffect, useState } from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Settings } from 'lucide-react';
+import Api from '../../api/api';
+import QuickActionsMenu from './QuickActionsMenu.jsx';
+import { FormBasedAuthModal, IntegrationConfigurationModal } from './modals';
+import { Switch } from '../ui/switch';
+import { Button } from '../ui/button';
+import { LoadingSpinner } from '../LoadingSpinner.jsx';
+import { useIntegrationContext } from '../../context/IntegrationContext.jsx';
 
 function IntegrationHorizontal(props) {
   const { name, description, icon } = props.data.display;
@@ -28,8 +28,8 @@ function IntegrationHorizontal(props) {
     setIntegrationId(props.data.id);
     const userActions = [
       {
-        title: "Get Sample Data",
-        action: "SAMPLE_DATA",
+        title: 'Get Sample Data',
+        action: 'SAMPLE_DATA',
       },
     ];
     Object.keys(props.data.userActions || {}).map((key) => {
@@ -44,16 +44,16 @@ function IntegrationHorizontal(props) {
 
   const getAuthorizeRequirements = async () => {
     setIsProcessing(true);
-    api.setJwt(sessionStorage.getItem("jwt"));
-    const authorizeData = await api.getAuthorizeRequirements(type, "");
-    if (authorizeData.type === "oauth2") {
+    api.setJwt(sessionStorage.getItem('jwt'));
+    const authorizeData = await api.getAuthorizeRequirements(type, '');
+    if (authorizeData.type === 'oauth2') {
       window.location.href = authorizeData.url;
     }
-    if (authorizeData.type !== "oauth2") {
+    if (authorizeData.type !== 'oauth2') {
       let data = authorizeData.data;
       for (const element of Object.entries(data.uiSchema)) {
-        if (!element["ui:widget"]) {
-          element["ui:widget"] = "text";
+        if (!element['ui:widget']) {
+          element['ui:widget'] = 'text';
         }
       }
 
@@ -78,7 +78,7 @@ function IntegrationHorizontal(props) {
   }
 
   const disconnectIntegration = async () => {
-    const jwt = sessionStorage.getItem("jwt");
+    const jwt = sessionStorage.getItem('jwt');
     api.setJwt(jwt);
     await api.deleteIntegration(props.data.id);
     setIsProcessing(true);
@@ -105,7 +105,7 @@ function IntegrationHorizontal(props) {
             <p className="pt-2 text-sm font-medium text-gray-600">
               {description}
             </p>
-            {status && status === "NEEDS_CONFIG" && (
+            {status && status === 'NEEDS_CONFIG' && (
               <p className="inline-flex pt-2 text-xs font-medium text-orange-500 gap-1">
                 <Settings className="w-4 h-4" /> Configure
               </p>
@@ -134,7 +134,7 @@ function IntegrationHorizontal(props) {
               </>
             ) : (
               <Button onClick={getAuthorizeRequirements}>
-                {isProcessing ? <LoadingSpinner /> : "Connect"}
+                {isProcessing ? <LoadingSpinner /> : 'Connect'}
               </Button>
             )}
           </div>

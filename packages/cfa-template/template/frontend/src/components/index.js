@@ -13,5 +13,5 @@ export * from './ui/alert-dialog';
 export * from './ui/checkbox';
 export * from './ui/select';
 export * from './ui/tabs';
-export * from './APISearchDropdownRenderer';
-export * from './LoadingSpinner';
+export * from './APISearchDropdownRenderer.jsx';
+export * from './LoadingSpinner.jsx';

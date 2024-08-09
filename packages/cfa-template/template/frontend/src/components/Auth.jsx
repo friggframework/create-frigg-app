@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
-import LoginPage from '../pages/LoginPage';
-import CreateUserPage from '../pages/CreateUserPage';
+import LoginPage from '../pages/LoginPage.jsx';
+import CreateUserPage from '../pages/CreateUserPage.jsx';
 
 const Auth = () => (
   <Switch>

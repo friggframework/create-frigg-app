@@ -1,14 +1,14 @@
-import IntegrationDropdown from "./IntegrationDropdown";
-import IntegrationHorizontal from "./IntegrationHorizontal";
-import IntegrationList from "./IntegrationList";
-import IntegrationSkeleton from "./IntegrationSkeleton";
-import IntegrationVertical from "./IntegrationVertical";
-import QuickActionsMenu from "./QuickActionsMenu";
+import IntegrationDropdown from './IntegrationDropdown.jsx';
+import IntegrationHorizontal from './IntegrationHorizontal.jsx';
+import IntegrationList from './IntegrationList.jsx';
+import IntegrationSkeleton from './IntegrationSkeleton.jsx';
+import IntegrationVertical from './IntegrationVertical.jsx';
+import QuickActionsMenu from './QuickActionsMenu.jsx';
 
 export {
   IntegrationDropdown as Dropdown,
   IntegrationHorizontal as Horizontal,
-  IntegrationList as List,
+  IntegrationList,
   IntegrationSkeleton as Skeleton,
   IntegrationVertical as Vertical,
   QuickActionsMenu as Switch,

@@ -1,8 +1,8 @@
-import { Form } from '../../Form';
+import { Form } from '../../Form.jsx';
 import { useEffect, useState } from 'react';
 import API from '../../../api/api';
-import { LoadingSpinner } from '../../LoadingSpinner';
-import { useFormContext } from '../../../context/FormContext';
+import { LoadingSpinner } from '../../LoadingSpinner.jsx';
+import { useFormContext } from '../../../context/FormContext.jsx';
 import FormType from '../../../enums/FormType';
 import { Button } from '../../ui/button';
 import { useToast } from '../../ui/use-toast';

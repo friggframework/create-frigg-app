@@ -1,7 +1,7 @@
-import { Form } from '../../Form';
+import { Form } from '../../Form.jsx';
 import { useEffect, useState } from 'react';
 import API from '../../../api/api';
-import { LoadingSpinner } from '../../LoadingSpinner';
+import { LoadingSpinner } from '../../LoadingSpinner.jsx';
 import { useToast } from '../../ui/use-toast';
 
 function FormBasedAuthModal({
@@ -56,7 +56,7 @@ function FormBasedAuthModal({
       setIsLoading(false);
     }
 
-    // FIXME duplicated code with AuthRedirect.js
+    // FIXME duplicated code with AuthRedirect.jsx
     // TODO change, for now using the target entity twice
     const integration = await this.api.createIntegration(
       res.entity_id,

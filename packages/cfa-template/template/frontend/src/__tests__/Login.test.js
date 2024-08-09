@@ -3,7 +3,8 @@ import * as redux from 'react-redux';
 import { render } from '@testing-library/react';
 import nock from 'nock';
 import userEvent from '@testing-library/user-event';
-import LoginPage from '../pages/LoginPage';
+import LoginPage from '../pages/LoginPage.jsx';
+import fetch from 'node-fetch';
 
 import '../../__mocks__/sessionStorage';
 

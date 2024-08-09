@@ -4,8 +4,8 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 import API from '../api/api';
-import { useFormContext } from '../context/FormContext';
-import { useIntegrationContext } from '../context/IntegrationContext';
+import { useFormContext } from '../context/FormContext.jsx';
+import { useIntegrationContext } from '../context/IntegrationContext.jsx';
 
 const APISearchDropdownRenderer = ({
   data,

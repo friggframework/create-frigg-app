@@ -116,7 +116,7 @@ const LoginPage = () => {
       <div className="flex flex-col gap-4 bg-white rounded-lg shadow-xl p-12 w-[420px]">
         <div className="flex w-full justify-center">
           <img
-            src={`https://friggframework.org/assets/img/frigg-logo.png`}
+            src={`https://friggframework.org/assets/img/frigg-icon.png`}
             alt="Logo"
             style={{ width: 150 }}
           />
